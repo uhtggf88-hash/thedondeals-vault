@@ -1,0 +1,2845 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#08080a">
+    <title>خزنة الأكواد السرية — THE DON DEALS</title>
+
+    <!-- Non-blocking Google Fonts with instant system fallback -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;800;900&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* =====================================================================
+           THE DON DEALS — 100% Standalone 60fps VIP Vault Design System
+           Colors: Carbon Black (#08080a), Deep Crimson (#b91c1c / #dc2626),
+                   Metallic Gold (#d4af37 / #f5d061)
+        ===================================================================== */
+        :root {
+            --bg-main: #08080a;
+            --bg-card: #111116;
+            --bg-card-2: #17171f;
+            --bg-elevated: #1e1e28;
+            --crimson: #dc2626;
+            --crimson-deep: #b91c1c;
+            --crimson-dark: #5c0b0b;
+            --crimson-soft: rgba(220, 38, 38, 0.15);
+            --crimson-border: rgba(220, 38, 38, 0.45);
+            --gold: #d4af37;
+            --gold-bright: #f5d061;
+            --gold-dark: #7a5c0d;
+            --gold-soft: rgba(212, 175, 55, 0.14);
+            --gold-border: rgba(212, 175, 55, 0.48);
+            --emerald: #10b981;
+            --text-primary: #f8f8fa;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --radius-xl: 22px;
+            --radius-lg: 16px;
+            --radius-md: 12px;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            font-family: 'Cairo', system-ui, -apple-system, 'Segoe UI', Tahoma, sans-serif;
+            -webkit-text-size-adjust: 100%;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.55;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        button, input, textarea {
+            font-family: inherit;
+            color: inherit;
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            background: none;
+            touch-action: manipulation;
+        }
+
+        /* Lightweight GPU-friendly ambient lighting (no blur lag) */
+        .ambient-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background-color: var(--bg-main);
+            background-image:
+                radial-gradient(ellipse 80% 42% at 50% 0%, rgba(185, 28, 28, 0.22) 0%, transparent 65%),
+                radial-gradient(circle at 88% 82%, rgba(212, 175, 55, 0.09) 0%, transparent 45%),
+                radial-gradient(circle at 12% 72%, rgba(185, 28, 28, 0.12) 0%, transparent 45%);
+        }
+
+        #confetti-canvas {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 85;
+            pointer-events: none;
+        }
+
+        .app-shell {
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 490px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        /* =====================================================================
+           Top Header Bar (Brand + Sound Toggle)
+        ===================================================================== */
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 30;
+            background: rgba(8, 8, 10, 0.95);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .topbar-inner {
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .brand-mini {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            user-select: none;
+        }
+
+        .brand-mini-text {
+            direction: ltr;
+            text-align: left;
+            line-height: 1.1;
+        }
+
+        .brand-mini-name {
+            font-family: 'Cinzel', Georgia, serif;
+            font-weight: 900;
+            font-size: 13px;
+            letter-spacing: 0.11em;
+            color: #fff;
+        }
+
+        .brand-mini-sub {
+            font-size: 8.5px;
+            font-weight: 800;
+            letter-spacing: 0.16em;
+            color: var(--gold-bright);
+            margin-top: 2px;
+        }
+
+        .sound-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: var(--bg-card-2);
+            border: 1px solid var(--border-subtle);
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--text-secondary);
+            transition: transform 0.12s ease, border-color 0.15s ease, color 0.15s ease;
+        }
+
+        .sound-btn:active {
+            transform: scale(0.94);
+        }
+
+        .sound-btn.active {
+            color: var(--gold-bright);
+            border-color: var(--gold-border);
+            background: rgba(212, 175, 55, 0.09);
+        }
+
+        /* =====================================================================
+           Hero Brand Section
+        ===================================================================== */
+        .hero {
+            padding: 18px 0 10px;
+            text-align: center;
+        }
+
+        .emblem-wrap {
+            position: relative;
+            width: 126px;
+            height: 126px;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .emblem-halo {
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            border: 1px dashed rgba(212, 175, 55, 0.34);
+            pointer-events: none;
+            animation: spinSlow 44s linear infinite;
+            will-change: transform;
+        }
+
+        @keyframes spinSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .emblem-medallion {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: #060608;
+            border: 1.5px solid var(--crimson-border);
+            padding: 4px;
+            box-shadow:
+                0 0 0 3px rgba(212, 175, 55, 0.12),
+                0 0 32px -8px rgba(220, 38, 38, 0.55),
+                0 14px 26px -10px rgba(0, 0, 0, 0.92);
+            overflow: hidden;
+        }
+
+        .brand-title {
+            direction: ltr;
+            font-family: 'Cinzel', Georgia, serif;
+            font-weight: 900;
+            font-size: clamp(22px, 6vw, 29px);
+            letter-spacing: 0.14em;
+            line-height: 1.1;
+            background: linear-gradient(180deg, #fff3c4 0%, #f5d061 32%, #d4af37 65%, #9a7415 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-tagline {
+            direction: ltr;
+            font-family: 'Cinzel', Georgia, serif;
+            font-size: 9.5px;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            color: #fca5a5;
+            margin-top: 3px;
+        }
+
+        .vault-headline {
+            font-size: clamp(19px, 4.8vw, 22px);
+            font-weight: 900;
+            color: #fff;
+            margin-top: 8px;
+        }
+
+        .round-pill-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 5px 13px;
+            border-radius: 999px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            font-size: 11.5px;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .status-pill.live {
+            border-color: rgba(16, 185, 129, 0.4);
+            background: rgba(16, 185, 129, 0.1);
+            color: #a7f3d0;
+        }
+
+        .status-pill.locked {
+            border-color: var(--crimson-border);
+            background: var(--crimson-soft);
+            color: #fecaca;
+        }
+
+        .status-pill.gold {
+            border-color: var(--gold-border);
+            background: var(--gold-soft);
+            color: var(--gold-bright);
+        }
+
+        .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--emerald);
+            flex-shrink: 0;
+        }
+
+        .dot.pulse {
+            animation: dotPulse 1.8s ease-in-out infinite;
+        }
+
+        .dot.red {
+            background: var(--crimson);
+        }
+
+        @keyframes dotPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.8); }
+        }
+
+        /* =====================================================================
+           VIP Fortune Wheel Card
+        ===================================================================== */
+        .wheel-section {
+            padding: 10px 0 24px;
+        }
+
+        .wheel-card {
+            background: linear-gradient(180deg, #13131b 0%, #0c0c11 100%);
+            border: 1px solid rgba(212, 175, 55, 0.26);
+            border-radius: var(--radius-xl);
+            padding: 16px 16px 20px;
+            box-shadow:
+                0 22px 46px -18px rgba(0, 0, 0, 0.96),
+                inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wheel-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 16%;
+            right: 16%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), var(--crimson), var(--gold), transparent);
+        }
+
+        .offer-banner {
+            text-align: center;
+            margin-bottom: 14px;
+            padding: 9px 14px;
+            border-radius: var(--radius-md);
+            background: rgba(8, 8, 11, 0.9);
+            border: 1px solid rgba(212, 175, 55, 0.24);
+        }
+
+        .offer-label {
+            font-size: 10.5px;
+            font-weight: 800;
+            color: var(--gold-bright);
+        }
+
+        .offer-title {
+            font-size: 16px;
+            font-weight: 900;
+            color: #fff;
+            margin-top: 1px;
+        }
+
+        /* Wheel Stage */
+        .wheel-stage {
+            position: relative;
+            width: min(296px, 79vw);
+            height: min(296px, 79vw);
+            margin: 12px auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wheel-pointer {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 14;
+            width: 34px;
+            height: 42px;
+            filter: drop-shadow(0 4px 10px rgba(212, 175, 55, 0.65));
+            transform-origin: 50% 6px;
+            transition: transform 0.06s ease-out;
+        }
+
+        .wheel-pointer.tick {
+            transform: translateX(-50%) rotate(-15deg);
+        }
+
+        .wheel-bezel {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            padding: 13px;
+            background: linear-gradient(145deg, #523d0b 0%, #1c1506 32%, #9a7415 56%, #241a06 82%, #f5d061 100%);
+            box-shadow:
+                0 0 0 2px #08080a,
+                0 0 0 3.5px rgba(212, 175, 55, 0.45),
+                0 0 42px -10px rgba(220, 38, 38, 0.55),
+                0 20px 36px -12px rgba(0, 0, 0, 0.95);
+        }
+
+        /* Animated LED Bulbs */
+        .led-ring {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 6;
+        }
+
+        .led-bulb {
+            position: absolute;
+            width: 6.5px;
+            height: 6.5px;
+            border-radius: 50%;
+            background: #4e3b0f;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.85);
+            transform: translate(-50%, -50%);
+            transition: background-color 0.16s ease, box-shadow 0.16s ease;
+        }
+
+        .led-bulb.lit-gold {
+            background: #fff5c0;
+            box-shadow: 0 0 8px 2px rgba(245, 208, 97, 0.92);
+        }
+
+        .led-bulb.lit-crimson {
+            background: #ff4d5a;
+            box-shadow: 0 0 8px 2px rgba(220, 38, 38, 0.92);
+        }
+
+        #wheel-canvas {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            display: block;
+            background: #0b0b10;
+            box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.85);
+        }
+
+        /* Center Hub with Golden Fedora Emblem */
+        .wheel-hub {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 28%, #2e0f12 0%, #09090d 76%);
+            border: 2.5px solid var(--gold);
+            box-shadow:
+                0 0 0 4px #08080a,
+                0 0 18px rgba(212, 175, 55, 0.36),
+                0 8px 18px rgba(0, 0, 0, 0.9);
+            z-index: 12;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.14s ease;
+        }
+
+        .wheel-hub:active:not(:disabled) {
+            transform: translate(-50%, -50%) scale(0.91);
+        }
+
+        .wheel-hub:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Buttons & Locked Banner */
+        .cta-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn {
+            width: 100%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            padding: 13px 18px;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 900;
+            transition: transform 0.12s ease, opacity 0.15s ease;
+        }
+
+        .btn:active:not(:disabled) {
+            transform: scale(0.98) translateY(1px);
+        }
+
+        .btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        .btn-crimson {
+            background: linear-gradient(135deg, var(--crimson) 0%, var(--crimson-deep) 100%);
+            color: #fff;
+            border: 1px solid rgba(254, 202, 202, 0.25);
+            box-shadow: 0 4px 0 var(--crimson-dark), 0 12px 24px -8px rgba(220, 38, 38, 0.55);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold-bright) 0%, #c49722 100%);
+            color: #08080a;
+            border: 1px solid rgba(255, 255, 255, 0.45);
+            box-shadow: 0 4px 0 var(--gold-dark), 0 12px 24px -8px rgba(212, 175, 55, 0.45);
+        }
+
+        .btn-dark {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+        }
+
+        .locked-banner {
+            display: none;
+            padding: 13px 14px;
+            border-radius: 14px;
+            background: #0a0a0f;
+            border: 1px solid var(--border-subtle);
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .locked-banner.show {
+            display: block;
+        }
+
+        .locked-banner strong {
+            color: #fff;
+            display: block;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+
+        .locked-banner.win-lock {
+            border-color: var(--gold-border);
+            background: rgba(212, 175, 55, 0.08);
+            color: #fde68a;
+        }
+
+        /* Compact Rules Strip */
+        .rules-card {
+            margin-top: 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 12px 10px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+            text-align: center;
+        }
+
+        .rule-icon {
+            font-size: 16px;
+            margin-bottom: 2px;
+        }
+
+        .rule-title {
+            font-size: 11.5px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .rule-sub {
+            font-size: 10px;
+            color: var(--text-secondary);
+        }
+
+        /* =====================================================================
+           Footer & Secret 4-Second Hold Admin Trigger (Zero visual clue < 2.5s)
+        ===================================================================== */
+        .footer {
+            margin-top: auto;
+            padding: 16px 0 calc(18px + env(safe-area-inset-bottom, 0px));
+            text-align: center;
+            border-top: 1px solid var(--border-subtle);
+            background: #070709;
+        }
+
+        .copyright-hold-zone {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 999px;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+            touch-action: manipulation;
+        }
+
+        .footer-brand {
+            direction: ltr;
+            font-family: 'Cinzel', Georgia, serif;
+            font-weight: 700;
+            font-size: 11.5px;
+            letter-spacing: 0.13em;
+            color: var(--text-muted);
+        }
+
+        .hold-ring-svg {
+            width: 15px;
+            height: 15px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            transform: rotate(-90deg);
+            pointer-events: none;
+        }
+
+        .hold-ring-svg.visible {
+            opacity: 0.85;
+        }
+
+        /* =====================================================================
+           Modals (Winner VIP, Loss, Admin Login, Admin Panel)
+        ===================================================================== */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 60;
+            background: rgba(4, 4, 7, 0.88);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+        }
+
+        .modal-backdrop.open {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .modal-sheet {
+            width: 100%;
+            max-width: 490px;
+            max-height: 90vh;
+            background: #111117;
+            border: 1px solid var(--crimson-border);
+            border-bottom: none;
+            border-radius: 24px 24px 0 0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transform: translateY(38px);
+            transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: transform;
+        }
+
+        .modal-backdrop.open .modal-sheet {
+            transform: translateY(0);
+        }
+
+        .modal-sheet.gold-border {
+            border-color: var(--gold-border);
+            box-shadow: 0 0 46px -12px rgba(212, 175, 55, 0.45);
+        }
+
+        .sheet-handle {
+            width: 42px;
+            height: 4px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.22);
+            margin: 10px auto 4px;
+            flex-shrink: 0;
+        }
+
+        .modal-header {
+            padding: 12px 18px 14px;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .modal-title {
+            font-size: 16px;
+            font-weight: 900;
+            color: #fff;
+        }
+
+        .close-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #e4e4e7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .close-btn:active {
+            transform: scale(0.92);
+        }
+
+        .modal-body {
+            padding: 18px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* VIP Winner Card (Screenshot-Ready) */
+        .vip-card {
+            background:
+                radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.22) 0%, transparent 56%),
+                radial-gradient(circle at 50% 100%, rgba(220, 38, 38, 0.22) 0%, transparent 56%),
+                #09090d;
+            border: 1.5px solid var(--gold-border);
+            border-radius: 20px;
+            padding: 20px 18px 16px;
+            text-align: center;
+        }
+
+        .vip-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 999px;
+            background: var(--gold-soft);
+            border: 1px solid var(--gold-border);
+            color: var(--gold-bright);
+            font-size: 11px;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+
+        .vip-logo-mini {
+            width: 62px;
+            height: 62px;
+            margin: 0 auto 10px;
+            border-radius: 50%;
+            border: 1.5px solid var(--gold);
+            padding: 3px;
+            background: #060608;
+        }
+
+        .vip-congrats {
+            font-size: 20px;
+            font-weight: 900;
+            color: #fff;
+        }
+
+        .vip-offer {
+            font-size: 14.5px;
+            font-weight: 800;
+            color: var(--gold-bright);
+            margin-top: 3px;
+        }
+
+        .secret-code-box {
+            margin: 14px 0 12px;
+            padding: 15px 14px;
+            border-radius: 14px;
+            background: #060609;
+            border: 1.5px dashed var(--gold);
+        }
+
+        .secret-code-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .secret-code-value {
+            direction: ltr;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: clamp(24px, 7vw, 31px);
+            font-weight: 900;
+            letter-spacing: 0.12em;
+            color: var(--gold-bright);
+            word-break: break-word;
+            user-select: all;
+        }
+
+        .vip-warning {
+            margin-top: 12px;
+            padding: 9px 12px;
+            border-radius: 12px;
+            background: rgba(220, 38, 38, 0.14);
+            border: 1px solid var(--crimson-border);
+            font-size: 12px;
+            font-weight: 700;
+            color: #fecaca;
+        }
+
+        .vip-stamp {
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* Loss Modal */
+        .loss-box {
+            text-align: center;
+            padding: 6px 4px;
+        }
+
+        .loss-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 12px;
+            border-radius: 18px;
+            background: var(--crimson-soft);
+            border: 1px solid var(--crimson-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
+        /* Admin Password Input (Zero Hints) */
+        .pass-input {
+            width: 100%;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 800;
+            padding: 13px 16px;
+            border-radius: 14px;
+            background: #08080c;
+            border: 1.5px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            outline: none;
+            margin: 12px 0;
+        }
+
+        .pass-input:focus {
+            border-color: var(--crimson);
+        }
+
+        .auth-error {
+            display: none;
+            font-size: 12px;
+            font-weight: 800;
+            color: #fca5a5;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .auth-error.show {
+            display: block;
+        }
+
+        /* Admin Tabs */
+        .admin-tabs {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4px;
+            padding: 8px 12px;
+            background: #0b0b10;
+            border-bottom: 1px solid var(--border-subtle);
+            flex-shrink: 0;
+        }
+
+        .admin-tab {
+            padding: 8px 4px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--text-secondary);
+            text-align: center;
+            transition: background-color 0.15s ease, color 0.15s ease;
+        }
+
+        .admin-tab.active {
+            background: var(--crimson);
+            color: #fff;
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+            font-weight: 800;
+            color: #e4e4e7;
+            margin-bottom: 5px;
+        }
+
+        .form-input {
+            width: 100%;
+            background: #08080c;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 11px;
+            padding: 10px 12px;
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #fff;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: var(--crimson);
+        }
+
+        .form-input.ltr {
+            direction: ltr;
+            text-align: left;
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            letter-spacing: 0.05em;
+        }
+
+        input[type="range"].admin-range {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, var(--crimson-deep), var(--crimson), var(--gold));
+            outline: none;
+            margin-top: 6px;
+        }
+
+        input[type="range"].admin-range::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #08080a;
+            border: 3px solid var(--gold-bright);
+            cursor: pointer;
+        }
+
+        /* Share Link Box */
+        .share-box {
+            background: #08080c;
+            border: 1px solid var(--gold-border);
+            border-radius: 14px;
+            padding: 14px;
+            margin-bottom: 14px;
+        }
+
+        .share-preview {
+            direction: ltr;
+            text-align: left;
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: 11px;
+            color: var(--gold-bright);
+            background: #050507;
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 10px;
+            word-break: break-all;
+            max-height: 82px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+
+        /* Segment Editor */
+        .seg-editor-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .seg-editor-card {
+            background: #09090d;
+            border: 1px solid var(--border-subtle);
+            border-radius: 13px;
+            padding: 11px;
+        }
+
+        .seg-editor-card.is-win {
+            border-color: var(--gold-border);
+            background: linear-gradient(180deg, rgba(212, 175, 55, 0.08), #09090d);
+        }
+
+        .seg-editor-top {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .seg-type-btn {
+            padding: 6px 10px;
+            border-radius: 9px;
+            font-size: 11px;
+            font-weight: 800;
+            white-space: nowrap;
+            border: 1px solid var(--border-subtle);
+            background: #171722;
+            color: var(--text-secondary);
+        }
+
+        .seg-type-btn.win {
+            background: var(--gold-soft);
+            border-color: var(--gold-border);
+            color: var(--gold-bright);
+        }
+
+        .seg-del-btn {
+            padding: 6px 9px;
+            border-radius: 9px;
+            background: rgba(220, 38, 38, 0.18);
+            color: #fca5a5;
+            font-size: 11px;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .stack-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 22px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            z-index: 95;
+            opacity: 0;
+            pointer-events: none;
+            transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s ease;
+            max-width: calc(100vw - 28px);
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .toast-inner {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 11px 16px;
+            border-radius: 13px;
+            background: #171722;
+            border: 1px solid var(--gold-border);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.85);
+            font-size: 13px;
+            font-weight: 800;
+            color: #fff;
+            white-space: nowrap;
+        }
+
+        @media (min-width: 600px) {
+            .modal-backdrop {
+                align-items: center;
+                padding: 20px;
+            }
+            .modal-sheet {
+                border-bottom: 1px solid var(--crimson-border);
+                border-radius: 22px;
+                transform: scale(0.95) translateY(14px);
+            }
+            .modal-backdrop.open .modal-sheet {
+                transform: scale(1) translateY(0);
+            }
+            .sheet-handle {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-bg" aria-hidden="true"></div>
+    <canvas id="confetti-canvas" aria-hidden="true"></canvas>
+
+    <div class="app-shell">
+        <!-- =====================================================================
+             Top Header
+        ===================================================================== -->
+        <header class="topbar">
+            <div class="container topbar-inner">
+                <div class="brand-mini">
+                    <svg viewBox="0 0 100 100" width="32" height="32" aria-hidden="true">
+                        <circle cx="50" cy="50" r="46" fill="#08080a" stroke="#dc2626" stroke-width="3"/>
+                        <path d="M22 46 Q50 38 78 46 Q50 51 22 46 Z" fill="#dc2626"/>
+                        <path d="M33 44 L38 24 Q50 20 62 24 L67 44 Z" fill="#0f0f14" stroke="#f5d061" stroke-width="2"/>
+                        <path d="M47 56 L53 56 L55 76 L50 83 L45 76 Z" fill="#d4af37"/>
+                    </svg>
+                    <div class="brand-mini-text">
+                        <div class="brand-mini-name">THE DON DEALS</div>
+                        <div class="brand-mini-sub">SECRET VAULT</div>
+                    </div>
+                </div>
+
+                <button type="button" id="sound-toggle" class="sound-btn active" aria-label="تشغيل أو كتم الصوت">
+                    <span id="sound-icon">🔊</span>
+                    <span id="sound-text">الصوت</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- =====================================================================
+             Main Member View (Instant Render — Zero Loading Screen)
+        ===================================================================== -->
+        <main class="container">
+            <section class="hero">
+                <!-- Inline SVG Brand Logo (Double Crimson Circles + Fedora + Tie Cutout) -->
+                <div class="emblem-wrap">
+                    <div class="emblem-halo" aria-hidden="true"></div>
+                    <div class="emblem-medallion">
+                        <svg viewBox="0 0 400 400" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="شعار THE DON DEALS">
+                            <defs>
+                                <radialGradient id="donBg" cx="50%" cy="42%" r="58%">
+                                    <stop offset="0%" stop-color="#2c080a"/>
+                                    <stop offset="56%" stop-color="#0c0506"/>
+                                    <stop offset="100%" stop-color="#050507"/>
+                                </radialGradient>
+                                <linearGradient id="crimsonMetal" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#fecaca"/>
+                                    <stop offset="30%" stop-color="#f87171"/>
+                                    <stop offset="68%" stop-color="#dc2626"/>
+                                    <stop offset="100%" stop-color="#7f1d1d"/>
+                                </linearGradient>
+                                <linearGradient id="rimLight" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#fecaca"/>
+                                    <stop offset="48%" stop-color="#dc2626"/>
+                                    <stop offset="100%" stop-color="#450a0a"/>
+                                </linearGradient>
+                                <linearGradient id="hatBrim" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#dc2626"/>
+                                    <stop offset="32%" stop-color="#190708"/>
+                                    <stop offset="68%" stop-color="#2b090b"/>
+                                    <stop offset="100%" stop-color="#f87171"/>
+                                </linearGradient>
+                                <mask id="tieCutout">
+                                    <rect width="400" height="400" fill="white"/>
+                                    <polygon points="190,222 210,222 206,236 194,236" fill="black"/>
+                                    <polygon points="194,238 206,238 214,278 200,295 186,278" fill="black"/>
+                                </mask>
+                            </defs>
+
+                            <circle cx="200" cy="200" r="196" fill="url(#donBg)"/>
+                            <circle cx="200" cy="200" r="186" fill="none" stroke="url(#crimsonMetal)" stroke-width="3.8"/>
+                            <circle cx="200" cy="200" r="176" fill="none" stroke="#dc2626" stroke-width="1.6" opacity="0.9"/>
+                            <circle cx="200" cy="200" r="170" fill="none" stroke="#991b1b" stroke-width="0.9" opacity="0.72"/>
+
+                            <!-- Fedora Silhouette & Suit with Red Rim Lighting -->
+                            <path d="M78 215 C96 184, 134 170, 162 162 L238 162 C266 170, 304 184, 322 215 Z" fill="#070709" stroke="url(#rimLight)" stroke-width="2.2"/>
+                            <polygon points="164,158 200,192 236,158 225,148 200,174 175,148" fill="#2d0c0e" stroke="#f87171" stroke-width="1.4"/>
+                            <path d="M162 160 L144 175 L168 206 L186 206 Z" fill="#0e090a" stroke="#dc2626" stroke-width="1.2"/>
+                            <path d="M238 160 L256 175 L232 206 L214 206 Z" fill="#0e090a" stroke="#dc2626" stroke-width="1.2"/>
+
+                            <path d="M158 112 C156 146, 174 178, 200 180 C226 178, 244 146, 242 112 Z" fill="#050507" stroke="url(#rimLight)" stroke-width="2"/>
+                            <path d="M148 106 L160 54 C164 44, 178 46, 200 52 C222 46, 236 44, 240 54 L252 106 Z" fill="#0a0607" stroke="url(#rimLight)" stroke-width="2.2" stroke-linejoin="round"/>
+                            <path d="M150 96 Q200 105 250 96 L252 106 Q200 115 148 106 Z" fill="#450a0a" stroke="#f87171" stroke-width="1"/>
+                            <path d="M114 106 C134 94, 266 94, 286 106 C272 126, 128 126, 114 106 Z" fill="url(#hatBrim)" stroke="#f87171" stroke-width="1.8"/>
+                            <path d="M126 108 Q200 120 274 108" fill="none" stroke="#060608" stroke-width="4" opacity="0.9"/>
+
+                            <!-- THE DON DEALS Typography -->
+                            <text x="200" y="213" text-anchor="middle" fill="url(#crimsonMetal)" font-family="Cinzel, Georgia, serif" font-weight="900" font-size="25" letter-spacing="4">THE</text>
+                            <text x="118" y="286" text-anchor="middle" fill="url(#crimsonMetal)" font-family="Cinzel, Georgia, serif" font-weight="900" font-size="78">D</text>
+                            <circle cx="200" cy="257" r="35" fill="url(#crimsonMetal)" stroke="#fecaca" stroke-width="1.1" mask="url(#tieCutout)"/>
+                            <text x="284" y="286" text-anchor="middle" fill="url(#crimsonMetal)" font-family="Cinzel, Georgia, serif" font-weight="900" font-size="78">N</text>
+
+                            <line x1="94" y1="312" x2="128" y2="312" stroke="#dc2626" stroke-width="2.2" stroke-linecap="round"/>
+                            <text x="200" y="320" text-anchor="middle" fill="url(#crimsonMetal)" font-family="Cinzel, Georgia, serif" font-weight="700" font-size="24" letter-spacing="8">DEALS</text>
+                            <line x1="272" y1="312" x2="306" y2="312" stroke="#dc2626" stroke-width="2.2" stroke-linecap="round"/>
+
+                            <text x="200" y="343" text-anchor="middle" fill="#f87171" font-family="Cinzel, Georgia, serif" font-weight="700" font-size="11.5" letter-spacing="2.2">CATCH THE BEST</text>
+                            <text x="200" y="359" text-anchor="middle" fill="#dc2626" font-family="Cinzel, Georgia, serif" font-weight="700" font-size="11.5" letter-spacing="2">BEFORE IT'S GONE</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <h1 class="brand-title">THE DON DEALS</h1>
+                <div class="brand-tagline">CATCH THE BEST BEFORE IT'S GONE</div>
+                <h2 class="vault-headline">خزنة الأكواد السرية</h2>
+
+                <div class="round-pill-row">
+                    <div id="status-pill" class="status-pill live">
+                        <span id="status-dot" class="dot pulse"></span>
+                        <span id="status-text">الجولة نشطة الآن</span>
+                    </div>
+                    <div class="status-pill gold">
+                        <span>🎯</span>
+                        <span id="round-badge-text">لفة واحدة لكل عضو</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- =====================================================================
+                 VIP Fortune Wheel Card
+            ===================================================================== -->
+            <section class="wheel-section">
+                <div class="wheel-card">
+                    <div class="offer-banner">
+                        <div class="offer-label">جائزة الجولة الحالية</div>
+                        <div id="offer-title-display" class="offer-title">خصم 15%</div>
+                    </div>
+
+                    <div class="wheel-stage">
+                        <!-- Sharp Metallic Gold Pointer -->
+                        <svg id="wheel-pointer" class="wheel-pointer" viewBox="0 0 40 50" fill="none" aria-hidden="true">
+                            <path d="M20 48 L5 13 C3 6.5, 9 2, 20 2 C31 2, 37 6.5, 35 13 L20 48 Z" fill="url(#ptrGrad)" stroke="#fff5cc" stroke-width="1.8"/>
+                            <circle cx="20" cy="14" r="4.5" fill="#08080a" stroke="#f5d061" stroke-width="1.8"/>
+                            <defs>
+                                <linearGradient id="ptrGrad" x1="20" y1="2" x2="20" y2="48" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#f5d061"/>
+                                    <stop offset="58%" stop-color="#d4af37"/>
+                                    <stop offset="100%" stop-color="#b91c1c"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+
+                        <!-- Metallic Gold Bezel with Animated LED Bulbs -->
+                        <div class="wheel-bezel">
+                            <div id="led-ring" class="led-ring" aria-hidden="true"></div>
+                            <canvas id="wheel-canvas"></canvas>
+                        </div>
+
+                        <!-- Center Hub with Golden Fedora Emblem -->
+                        <button type="button" id="hub-spin-btn" class="wheel-hub" aria-label="لف العجلة">
+                            <svg viewBox="0 0 64 64" width="34" height="34" aria-hidden="true">
+                                <path d="M8 39 Q32 30 56 39 Q32 45 8 39 Z" fill="#d4af37"/>
+                                <path d="M18 37 L23 16 Q32 12 41 16 L46 37 Z" fill="#120b0c" stroke="#f5d061" stroke-width="2.2" stroke-linejoin="round"/>
+                                <path d="M19 31 Q32 35 45 31 L46 36 Q32 40 18 36 Z" fill="#dc2626"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="cta-stack">
+                        <button type="button" id="main-spin-btn" class="btn btn-crimson">
+                            <span>🎰</span>
+                            <span id="spin-btn-label">لفّ العجلة</span>
+                        </button>
+
+                        <!-- Persistent Golden Button shown ONLY if user won this round -->
+                        <button type="button" id="reopen-win-btn" class="btn btn-gold" style="display:none;">
+                            <span>👑</span>
+                            <span>عرض كود الخصم الخاص بك</span>
+                        </button>
+
+                        <div id="locked-banner" class="locked-banner"></div>
+                    </div>
+                </div>
+
+                <div class="rules-card">
+                    <div>
+                        <div class="rule-icon">🎯</div>
+                        <div class="rule-title">لفة واحدة</div>
+                        <div class="rule-sub">لكل عضو في الجولة</div>
+                    </div>
+                    <div>
+                        <div class="rule-icon">🔐</div>
+                        <div class="rule-title">كود سري</div>
+                        <div class="rule-sub">يظهر للفائز فقط</div>
+                    </div>
+                    <div>
+                        <div class="rule-icon">⚡</div>
+                        <div class="rule-title">عدد محدود</div>
+                        <div class="rule-sub">الحقه قبل ما يخلص</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- =====================================================================
+             Footer with Secret 4-Second Hold Admin Trigger
+        ===================================================================== -->
+        <footer class="footer">
+            <div class="container">
+                <div id="admin-hold-trigger" class="copyright-hold-zone">
+                    <span class="footer-brand">© THE DON DEALS</span>
+                    <svg id="hold-ring-svg" class="hold-ring-svg" viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="12" cy="12" r="9" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="2.2"/>
+                        <circle id="hold-ring-progress" cx="12" cy="12" r="9" fill="none" stroke="#d4af37" stroke-width="2.2" stroke-dasharray="56.55" stroke-dashoffset="56.55" stroke-linecap="round"/>
+                    </svg>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- =====================================================================
+         MODAL 1: VIP Screenshot-Ready Winner Card
+    ===================================================================== -->
+    <div id="modal-winner" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="win-heading">
+        <div class="modal-sheet gold-border">
+            <div class="sheet-handle"></div>
+            <div class="modal-header">
+                <div class="modal-title" style="color:var(--gold-bright);">👑 كارت الفوز VIP</div>
+                <button type="button" class="close-btn" onclick="requestCloseModal()" aria-label="إغلاق">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="vip-card">
+                    <div class="vip-badge">
+                        <span>✨</span>
+                        <span id="win-round-badge">فائز معتمد</span>
+                    </div>
+
+                    <div class="vip-logo-mini">
+                        <svg viewBox="0 0 100 100" width="100%" height="100%" aria-hidden="true">
+                            <circle cx="50" cy="50" r="46" fill="#08080a" stroke="#d4af37" stroke-width="2.5"/>
+                            <path d="M22 45 Q50 37 78 45 Q50 50 22 45 Z" fill="#dc2626"/>
+                            <path d="M33 43 L38 23 Q50 19 62 23 L67 43 Z" fill="#0f0f14" stroke="#f5d061" stroke-width="2"/>
+                            <path d="M47 55 L53 55 L55 76 L50 83 L45 76 Z" fill="#d4af37"/>
+                        </svg>
+                    </div>
+
+                    <h3 id="win-heading" class="vip-congrats">ألف مبروك يا بطل! 🎉</h3>
+                    <div id="win-offer-title" class="vip-offer">خصم 15%</div>
+
+                    <div class="secret-code-box">
+                        <div class="secret-code-label">كود الخصم السري الخاص بك</div>
+                        <div id="win-secret-code" class="secret-code-value">---</div>
+                    </div>
+
+                    <button type="button" id="copy-secret-btn" class="btn btn-gold">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                        <span>نسخ الكود</span>
+                    </button>
+
+                    <div class="vip-warning">
+                        ⚠️ الحق استخدم الكود دلوقتي قبل ما العدد المحدود يخلص!
+                    </div>
+
+                    <div class="vip-stamp">
+                        <span>THE DON DEALS</span>
+                        <span id="win-timestamp">فائز معتمد</span>
+                    </div>
+                </div>
+                <p style="text-align:center;font-size:12px;color:var(--text-secondary);margin-top:10px;">
+                    خد سكرين شوت للكارت وشاركه في كومنتات الجروب 🔥
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- =====================================================================
+         MODAL 2: Loss Result Modal
+    ===================================================================== -->
+    <div id="modal-loss" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="loss-heading">
+        <div class="modal-sheet">
+            <div class="sheet-handle"></div>
+            <div class="modal-header">
+                <div class="modal-title">نتيجة اللفة</div>
+                <button type="button" class="close-btn" onclick="requestCloseModal()" aria-label="إغلاق">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="loss-box">
+                    <div class="loss-icon">🎲</div>
+                    <h3 id="loss-heading" style="font-size:21px;font-weight:900;color:#fff;margin-bottom:6px;">حظ أوفر!</h3>
+                    <p id="loss-message" style="font-size:14px;color:var(--text-secondary);margin-bottom:18px;">
+                        استنفدت محاولتك في هذه الجولة — انتظر الجولة القادمة
+                    </p>
+                    <button type="button" class="btn btn-dark" onclick="requestCloseModal()">تمام، هستنى الجولة الجاية</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =====================================================================
+         MODAL 3: Hidden Admin Login (ZERO Password Hints)
+    ===================================================================== -->
+    <div id="modal-admin-auth" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="auth-heading">
+        <div class="modal-sheet">
+            <div class="sheet-handle"></div>
+            <div class="modal-header">
+                <div class="modal-title">🔐 دخول الإدارة</div>
+                <button type="button" class="close-btn" onclick="requestCloseModal()" aria-label="إغلاق">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="auth-heading" style="font-size:13.5px;color:var(--text-secondary);text-align:center;">
+                    منطقة مخصصة لصاحب الجروب فقط
+                </p>
+
+                <input type="password" id="admin-pass-input" class="pass-input" placeholder="أدخل كلمة المرور" autocomplete="off">
+                <div id="auth-error" class="auth-error">كلمة المرور غير صحيحة</div>
+
+                <button type="button" id="verify-pass-btn" class="btn btn-crimson">دخول</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =====================================================================
+         MODAL 4: Tabbed Admin Panel (Auto-Closes Back to Wheel on Save)
+    ===================================================================== -->
+    <div id="modal-admin-panel" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="admin-dash-title">
+        <div class="modal-sheet">
+            <div class="sheet-handle"></div>
+            <div class="modal-header">
+                <div id="admin-dash-title" class="modal-title">⚙️ لوحة تحكم الأدمن</div>
+                <button type="button" class="close-btn" onclick="requestCloseModal()" aria-label="إغلاق">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+
+            <div class="admin-tabs" role="tablist">
+                <button type="button" class="admin-tab active" data-tab="tab-round">إعدادات الجولة</button>
+                <button type="button" class="admin-tab" data-tab="tab-share">مشاركة الجولة</button>
+                <button type="button" class="admin-tab" data-tab="tab-wheel">تخصيص العجلة</button>
+                <button type="button" class="admin-tab" data-tab="tab-security">الأمان</button>
+            </div>
+
+            <div class="modal-body">
+                <!-- TAB 1: Round Settings -->
+                <div id="tab-round" class="tab-pane active">
+                    <div class="form-group">
+                        <label for="adm-code" class="form-label"><span>كود الخصم السري</span></label>
+                        <input type="text" id="adm-code" class="form-input ltr" placeholder="DON15">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="adm-discount" class="form-label"><span>وصف الخصم الظاهر للأعضاء</span></label>
+                        <input type="text" id="adm-discount" class="form-input" placeholder="خصم 15%">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="adm-prob" class="form-label">
+                            <span>نسبة الفوز (%)</span>
+                            <span id="adm-prob-val" style="color:var(--gold-bright);">25%</span>
+                        </label>
+                        <input type="range" id="adm-prob" class="admin-range" min="5" max="100" step="5" value="25">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="adm-round-id" class="form-label"><span>معرّف الجولة (Round ID)</span></label>
+                        <input type="text" id="adm-round-id" class="form-input ltr" placeholder="R1">
+                    </div>
+
+                    <div class="stack-actions" style="margin-top:14px;">
+                        <button type="button" id="btn-save-round" class="btn btn-crimson">
+                            <span>💾</span>
+                            <span>حفظ الإعدادات</span>
+                        </button>
+                        <button type="button" id="btn-new-round" class="btn btn-gold">
+                            <span>🚀</span>
+                            <span>بدء جولة جديدة</span>
+                        </button>
+                        <button type="button" id="btn-test-tg" class="btn btn-dark" style="font-size:13px;padding:11px 14px;">
+                            <span>📲</span>
+                            <span>تجربة إشعار تليجرام</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TAB 2: Encrypted Share Link for Netlify / Static Hosting -->
+                <div id="tab-share" class="tab-pane">
+                    <div class="share-box">
+                        <div style="font-size:14px;font-weight:900;color:#fff;margin-bottom:4px;">🔗 لينك الجولة المتشفّر للجروب</div>
+                        <p style="font-size:12px;color:var(--text-secondary);line-height:1.6;">
+                            اللينك ده بيحمل إعدادات الجولة الحالية (الكود السري، الوصف، نسبة الفوز، وخانات العجلة) بشكل مشفّر ومخفي تماماً. أي عضو يفتحه على Netlify هياخد لفة واحدة بس للجولة دي ومش هيشوف الكود إلا لو كسب!
+                        </p>
+                        <div id="share-link-preview" class="share-preview">اضغط الزر بالأسفل لتوليد ونسخ اللينك...</div>
+                    </div>
+
+                    <button type="button" id="btn-generate-share" class="btn btn-gold">
+                        <span>✨</span>
+                        <span>توليد ونسخ لينك الجولة للجروب</span>
+                    </button>
+                </div>
+
+                <!-- TAB 3: Customize Wheel Segments & Egyptian Arabic Voice Phrases -->
+                <div id="tab-wheel" class="tab-pane">
+                    <p style="font-size:12px;color:var(--text-secondary);margin-bottom:10px;">
+                        عدّل اسم كل خانة أو نوعها (فوز / خسارة) والجملة الصوتية المصرية بتاعتها، أو ضيف خانة جديدة:
+                    </p>
+
+                    <div id="seg-editor-list" class="seg-editor-list"></div>
+
+                    <div class="stack-actions">
+                        <button type="button" id="btn-add-segment" class="btn btn-dark" style="padding:10px 14px;font-size:13px;">
+                            <span>+ إضافة خانة جديدة</span>
+                        </button>
+                        <button type="button" id="btn-save-wheel" class="btn btn-crimson">
+                            <span>💾</span>
+                            <span>حفظ الإعدادات</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TAB 4: Security (Change Admin Password) -->
+                <div id="tab-security" class="tab-pane">
+                    <div class="form-group">
+                        <label for="adm-new-pass" class="form-label"><span>كلمة المرور الجديدة (6 حروف على الأقل)</span></label>
+                        <input type="password" id="adm-new-pass" class="form-input" placeholder="أدخل كلمة المرور الجديدة">
+                    </div>
+                    <div class="form-group">
+                        <label for="adm-confirm-pass" class="form-label"><span>تأكيد كلمة المرور الجديدة</span></label>
+                        <input type="password" id="adm-confirm-pass" class="form-input" placeholder="أعد إدخال كلمة المرور">
+                    </div>
+                    <button type="button" id="btn-save-pass" class="btn btn-crimson">
+                        <span>🔐</span>
+                        <span>حفظ الإعدادات</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast" role="status" aria-live="polite">
+        <div class="toast-inner">
+            <span style="color:var(--gold-bright);">✓</span>
+            <span id="toast-msg">تم حفظ الإعدادات بنجاح</span>
+        </div>
+    </div>
+
+    <script>
+        /* =====================================================================
+           1. Default Configuration & 6 Diverse Egyptian Arabic Segments
+        ===================================================================== */
+        const DEFAULT_SEGMENTS = [
+            {
+                label: 'كود الخصم 🎁',
+                isWin: true,
+                voice: 'ألف مبروك يا بطل! كسبت كود الخصم من ذا دون ديلز، الحقه بسرعة قبل ما يخلص!'
+            },
+            {
+                label: 'حظ أوفر',
+                isWin: false,
+                voice: 'حظ أوفر يا صاحبي، إن شاء الله المرة الجاية تكون من نصيبك'
+            },
+            {
+                label: 'متعوّضة',
+                isWin: false,
+                voice: 'متعوّضة يا نجم، الجولات لسه كتير في ذا دون ديلز'
+            },
+            {
+                label: 'الجولة الجاية',
+                isWin: false,
+                voice: 'معلش يا بطل، الجولة الجاية الكود بتاعك بإذن الله'
+            },
+            {
+                label: 'قربت أوي',
+                isWin: false,
+                voice: 'يا خبر! كنت قربت أوي، استنى الجولة الجاية'
+            },
+            {
+                label: 'المرة الجاية',
+                isWin: false,
+                voice: 'ولا يهمك يا معلم، المرة الجاية هتظبط معاك'
+            }
+        ];
+
+        const DEFAULT_CONFIG = {
+            roundId: 'DON-R1',
+            secretCode: 'DON15',
+            discountLabel: 'خصم 15%',
+            winChance: 25,
+            tgToken: '9035418402:AAERrMt03cAaCIppEKBAk41TJ8pnvqCvhtw',
+            tgChatId: '6267607005',
+            segments: DEFAULT_SEGMENTS.map(s => ({ ...s }))
+        };
+
+        // Storage keys
+        const KEY_ADMIN_CONFIG = 'don_vault_admin_cfg_v4';
+        const KEY_ADMIN_PASS   = 'don_vault_admin_hash_v4';
+        const KEY_SPIN_LOCKS   = 'don_vault_spin_locks_v4';
+        const COOKIE_PREFIX    = 'don_v4_lock_';
+
+        // Default password is verified via SHA-256 hash (never printed in UI)
+        const DEFAULT_PASS_RAW = 'DON@2026';
+        let defaultPassHash = '';
+
+        /* =====================================================================
+           2. Pure-JS SHA-256 (with SubtleCrypto primary + Sync Fallback)
+              Works identically on HTTPS (Netlify) and HTTP / file://
+        ===================================================================== */
+        function sha256SyncFallback(ascii) {
+            function rightRotate(value, amount) {
+                return (value >>> amount) | (value << (32 - amount));
+            }
+            const maxWord = Math.pow(2, 32);
+            const result = [];
+            const words = [];
+            const asciiBitLength = ascii.length * 8;
+            const hash = [
+                0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a,
+                0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19
+            ];
+            const k = [
+                0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
+                0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
+                0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
+                0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967,
+                0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
+                0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
+                0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
+                0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
+            ];
+
+            ascii += '\x80';
+            while (ascii.length % 64 - 56) ascii += '\x00';
+            for (let i = 0; i < ascii.length; i++) {
+                const j = ascii.charCodeAt(i);
+                words[i >> 2] |= j << ((3 - i) % 4) * 8;
+            }
+            words[words.length] = ((asciiBitLength / maxWord) | 0);
+            words[words.length] = (asciiBitLength);
+
+            for (let j = 0; j < words.length;) {
+                const w = words.slice(j, j += 16);
+                const oldHash = hash.slice(0);
+                for (let i = 0; i < 64; i++) {
+                    const w15 = w[i - 15], w2 = w[i - 2];
+                    const a = hash[0], e = hash[4];
+                    const temp1 = hash[7]
+                        + (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25))
+                        + ((e & hash[5]) ^ ((~e) & hash[6]))
+                        + k[i]
+                        + (w[i] = (i < 16) ? w[i] : (
+                            w[i - 16]
+                            + (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3))
+                            + w[i - 7]
+                            + (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10))
+                        ) | 0);
+                    const temp2 = (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22))
+                        + ((a & hash[1]) ^ (a & hash[2]) ^ (hash[1] & hash[2]));
+                    hash.unshift((temp1 + temp2) | 0);
+                    hash[4] = (hash[4] + temp1) | 0;
+                    hash.pop();
+                }
+                for (let i = 0; i < 8; i++) hash[i] = (hash[i] + oldHash[i]) | 0;
+            }
+            for (let i = 0; i < 8; i++) {
+                for (let j = 3; j + 1; j--) {
+                    const b = (hash[i] >> (j * 8)) & 255;
+                    result.push((b < 16 ? '0' : '') + b.toString(16));
+                }
+            }
+            return result.join('');
+        }
+
+        async function hashPassword(str) {
+            try {
+                if (window.crypto && window.crypto.subtle) {
+                    const bytes = new TextEncoder().encode(str);
+                    const digest = await crypto.subtle.digest('SHA-256', bytes);
+                    return Array.from(new Uint8Array(digest))
+                        .map(b => b.toString(16).padStart(2, '0'))
+                        .join('');
+                }
+            } catch (e) {}
+            const utf8 = unescape(encodeURIComponent(str));
+            return sha256SyncFallback(utf8);
+        }
+
+        /* =====================================================================
+           3. XOR-Obfuscated Base64URL Encoder / Decoder for ?g=... Share Links
+        ===================================================================== */
+        const XOR_KEY = [0x54, 0x44, 0x4F, 0x4E, 0x39, 0x37, 0xA5, 0x2B, 0x6C, 0x1F];
+
+        function encodeRoundPayload(cfg) {
+            const packed = {
+                r: cfg.roundId,
+                c: cfg.secretCode,
+                d: cfg.discountLabel,
+                w: cfg.winChance,
+                s: cfg.segments.map(seg => [seg.label, seg.isWin ? 1 : 0, seg.voice])
+            };
+            const jsonStr = JSON.stringify(packed);
+            const utf8Bytes = new TextEncoder().encode(jsonStr);
+            const xored = new Uint8Array(utf8Bytes.length);
+            for (let i = 0; i < utf8Bytes.length; i++) {
+                xored[i] = utf8Bytes[i] ^ XOR_KEY[i % XOR_KEY.length] ^ ((i * 13) & 0xFF);
+            }
+            let binary = '';
+            for (let i = 0; i < xored.length; i++) binary += String.fromCharCode(xored[i]);
+            return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+        }
+
+        function decodeRoundPayload(token) {
+            try {
+                let b64 = token.replace(/-/g, '+').replace(/_/g, '/');
+                while (b64.length % 4) b64 += '=';
+                const binary = atob(b64);
+                const bytes = new Uint8Array(binary.length);
+                for (let i = 0; i < binary.length; i++) {
+                    bytes[i] = binary.charCodeAt(i) ^ XOR_KEY[i % XOR_KEY.length] ^ ((i * 13) & 0xFF);
+                }
+                const jsonStr = new TextDecoder().decode(bytes);
+                const p = JSON.parse(jsonStr);
+                if (!p || !p.r || !p.c) return null;
+                const segments = Array.isArray(p.s) && p.s.length >= 2
+                    ? p.s.map(item => ({
+                        label: String(item[0] || 'خانة'),
+                        isWin: Boolean(item[1]),
+                        voice: String(item[2] || '')
+                    }))
+                    : DEFAULT_SEGMENTS.map(s => ({ ...s }));
+                return {
+                    roundId: String(p.r),
+                    secretCode: String(p.c),
+                    discountLabel: String(p.d || 'خصم 15%'),
+                    winChance: Math.min(100, Math.max(5, Number(p.w) || 25)),
+                    tgToken: DEFAULT_CONFIG.tgToken,
+                    tgChatId: DEFAULT_CONFIG.tgChatId,
+                    segments
+                };
+            } catch (e) {
+                return null;
+            }
+        }
+
+        /* =====================================================================
+           4. Strict 3-Layer Anti-Refresh Lock (localStorage + sessionStorage + Cookie)
+        ===================================================================== */
+        function sanitizeKey(str) {
+            return String(str || 'R1').replace(/[^a-zA-Z0-9_-]/g, '_').slice(0, 32);
+        }
+
+        function setCookie(name, value, days) {
+            try {
+                const exp = new Date(Date.now() + days * 86400 * 1000).toUTCString();
+                document.cookie = `${name}=${encodeURIComponent(value)}; expires=${exp}; path=/; SameSite=Lax`;
+            } catch (e) {}
+        }
+
+        function getCookie(name) {
+            try {
+                const prefix = `${name}=`;
+                const parts = document.cookie.split(';');
+                for (let part of parts) {
+                    part = part.trim();
+                    if (part.startsWith(prefix)) return decodeURIComponent(part.slice(prefix.length));
+                }
+            } catch (e) {}
+            return null;
+        }
+
+        function saveSpinLock(record) {
+            const rid = record.roundId;
+            // Layer 1: localStorage
+            try {
+                const map = JSON.parse(localStorage.getItem(KEY_SPIN_LOCKS) || '{}');
+                map[rid] = record;
+                localStorage.setItem(KEY_SPIN_LOCKS, JSON.stringify(map));
+            } catch (e) {}
+
+            // Layer 2: sessionStorage
+            try {
+                const map = JSON.parse(sessionStorage.getItem(KEY_SPIN_LOCKS) || '{}');
+                map[rid] = record;
+                sessionStorage.setItem(KEY_SPIN_LOCKS, JSON.stringify(map));
+            } catch (e) {}
+
+            // Layer 3: document.cookie keyed by roundId
+            try {
+                const compact = JSON.stringify({
+                    w: record.won ? 1 : 0,
+                    c: record.won ? record.code : '',
+                    l: record.label || '',
+                    t: record.timestamp || ''
+                });
+                setCookie(COOKIE_PREFIX + sanitizeKey(rid), compact, 90);
+            } catch (e) {}
+        }
+
+        function getSpinLock(roundId) {
+            // Check Layer 1: localStorage
+            try {
+                const map = JSON.parse(localStorage.getItem(KEY_SPIN_LOCKS) || '{}');
+                if (map && map[roundId]) return map[roundId];
+            } catch (e) {}
+
+            // Check Layer 2: sessionStorage
+            try {
+                const map = JSON.parse(sessionStorage.getItem(KEY_SPIN_LOCKS) || '{}');
+                if (map && map[roundId]) {
+                    saveSpinLock(map[roundId]); // Re-hydrate all layers
+                    return map[roundId];
+                }
+            } catch (e) {}
+
+            // Check Layer 3: document.cookie
+            try {
+                const raw = getCookie(COOKIE_PREFIX + sanitizeKey(roundId));
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    const rec = {
+                        roundId,
+                        won: parsed.w === 1,
+                        code: parsed.w === 1 ? parsed.c : null,
+                        label: parsed.l || '',
+                        timestamp: parsed.t || ''
+                    };
+                    saveSpinLock(rec);
+                    return rec;
+                }
+            } catch (e) {}
+
+            return null;
+        }
+
+        /* =====================================================================
+           5. Config Loading (URL ?g=... overrides local admin config silently)
+        ===================================================================== */
+        function loadInitialConfig() {
+            // Priority 1: Encrypted ?g=... share link parameter
+            try {
+                const params = new URLSearchParams(window.location.search);
+                const token = params.get('g');
+                if (token) {
+                    const decoded = decodeRoundPayload(token);
+                    if (decoded) return decoded;
+                }
+            } catch (e) {}
+
+            // Priority 2: Admin's locally saved config
+            try {
+                const raw = localStorage.getItem(KEY_ADMIN_CONFIG);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (parsed && parsed.roundId) {
+                        return {
+                            ...DEFAULT_CONFIG,
+                            ...parsed,
+                            segments: Array.isArray(parsed.segments) && parsed.segments.length >= 2
+                                ? parsed.segments
+                                : DEFAULT_SEGMENTS.map(s => ({ ...s }))
+                        };
+                    }
+                }
+            } catch (e) {}
+
+            return { ...DEFAULT_CONFIG, segments: DEFAULT_SEGMENTS.map(s => ({ ...s })) };
+        }
+
+        function persistAdminConfig(cfg) {
+            try {
+                localStorage.setItem(KEY_ADMIN_CONFIG, JSON.stringify(cfg));
+            } catch (e) {}
+        }
+
+        /* =====================================================================
+           6. Global State
+        ===================================================================== */
+        let roundConfig = loadInitialConfig();
+        let userSpinRecord = getSpinLock(roundConfig.roundId);
+        let draftSegments = [];
+
+        let isSpinning = false;
+        let soundEnabled = true;
+        let audioCtx = null;
+        let currentAngle = 0;
+
+        let wheelCanvas = null;
+        let wheelCtx = null;
+        let wheelSize = 270;
+
+        let ledElements = [];
+        let ledChaseIndex = 0;
+        let ledTimer = null;
+
+        let activeModalId = null;
+        let pushedModalHistory = false;
+        let toastTimer = null;
+
+        /* =====================================================================
+           7. Standalone Web Audio Synthesizer + Egyptian Arabic SpeechSynthesis
+        ===================================================================== */
+        function unlockAudio() {
+            if (!soundEnabled) return;
+            try {
+                if (!audioCtx) {
+                    const AC = window.AudioContext || window.webkitAudioContext;
+                    if (AC) audioCtx = new AC();
+                }
+                if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+            } catch (e) {}
+
+            // Warm up speechSynthesis voices list on mobile tap
+            try {
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.getVoices();
+                }
+            } catch (e) {}
+        }
+
+        function playTickSound(speedRatio = 1) {
+            if (!soundEnabled || !audioCtx) return;
+            try {
+                const now = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'triangle';
+                const startFreq = 720 + Math.min(260, speedRatio * 180);
+                osc.frequency.setValueAtTime(startFreq, now);
+                osc.frequency.exponentialRampToValueAtTime(190, now + 0.025);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.028);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.03);
+            } catch (e) {}
+        }
+
+        function playWinFanfare() {
+            if (!soundEnabled || !audioCtx) return;
+            try {
+                // Celebratory major-9th chord arpeggio
+                const notes = [523.25, 659.25, 783.99, 1046.5, 1174.66];
+                notes.forEach((freq, i) => {
+                    const t = audioCtx.currentTime + i * 0.075;
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = i === notes.length - 1 ? 'triangle' : 'sine';
+                    osc.frequency.setValueAtTime(freq, t);
+                    gain.gain.setValueAtTime(0.001, t);
+                    gain.gain.linearRampToValueAtTime(0.12, t + 0.02);
+                    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.45);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(t);
+                    osc.stop(t + 0.48);
+                });
+            } catch (e) {}
+        }
+
+        function playLossTone() {
+            if (!soundEnabled || !audioCtx) return;
+            try {
+                const now = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(300, now);
+                osc.frequency.exponentialRampToValueAtTime(155, now + 0.28);
+                gain.gain.setValueAtTime(0.09, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.32);
+            } catch (e) {}
+        }
+
+        function speakEgyptianArabic(phrase) {
+            if (!soundEnabled || !phrase || !('speechSynthesis' in window)) return;
+            try {
+                window.speechSynthesis.cancel();
+                const utter = new SpeechSynthesisUtterance(phrase);
+                utter.lang = 'ar-EG';
+                utter.rate = 0.96;
+                utter.pitch = 1.02;
+
+                const voices = window.speechSynthesis.getVoices() || [];
+                const pick =
+                    voices.find(v => v.lang && v.lang.toLowerCase() === 'ar-eg') ||
+                    voices.find(v => v.lang && v.lang.toLowerCase() === 'ar-sa') ||
+                    voices.find(v => v.lang && v.lang.toLowerCase().startsWith('ar'));
+                if (pick) utter.voice = pick;
+
+                window.speechSynthesis.speak(utter);
+            } catch (e) {}
+        }
+
+        /* =====================================================================
+           8. Toast & Reliable Clipboard Copy (document.execCommand)
+        ===================================================================== */
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').textContent = msg;
+            toast.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+
+        function copyText(text, successMsg) {
+            try {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                ta.setAttribute('readonly', '');
+                ta.style.position = 'fixed';
+                ta.style.top = '-9999px';
+                document.body.appendChild(ta);
+                ta.select();
+                ta.setSelectionRange(0, 99999);
+                const ok = document.execCommand('copy');
+                document.body.removeChild(ta);
+                showToast(ok ? successMsg : 'تعذر النسخ التلقائي — انسخه يدوياً');
+            } catch (e) {
+                showToast('تعذر النسخ التلقائي — انسخه يدوياً');
+            }
+        }
+
+        /* =====================================================================
+           9. LED Rim & 60fps Canvas Fortune Wheel
+        ===================================================================== */
+        function buildLedRing() {
+            const ring = document.getElementById('led-ring');
+            ring.innerHTML = '';
+            ledElements = [];
+            const count = 18;
+            for (let i = 0; i < count; i++) {
+                const angle = (i / count) * Math.PI * 2 - Math.PI / 2;
+                const x = 50 + Math.cos(angle) * 47.6;
+                const y = 50 + Math.sin(angle) * 47.6;
+                const bulb = document.createElement('span');
+                bulb.className = 'led-bulb';
+                bulb.style.left = `${x}%`;
+                bulb.style.top = `${y}%`;
+                ring.appendChild(bulb);
+                ledElements.push(bulb);
+            }
+            setLedMode('idle');
+        }
+
+        function setLedMode(mode) {
+            if (ledTimer) clearInterval(ledTimer);
+            const intervalMs = mode === 'spin' ? 80 : mode === 'win' ? 110 : 700;
+            ledTimer = setInterval(() => {
+                ledChaseIndex = (ledChaseIndex + 1) % ledElements.length;
+                for (let i = 0; i < ledElements.length; i++) {
+                    const el = ledElements[i];
+                    el.className = 'led-bulb';
+                    if (mode === 'spin') {
+                        if (i === ledChaseIndex || i === (ledChaseIndex + 9) % ledElements.length) {
+                            el.classList.add('lit-gold');
+                        } else if ((i + ledChaseIndex) % 3 === 0) {
+                            el.classList.add('lit-crimson');
+                        }
+                    } else if (mode === 'win') {
+                        el.classList.add((i + ledChaseIndex) % 2 === 0 ? 'lit-gold' : 'lit-crimson');
+                    } else {
+                        if ((i + ledChaseIndex) % 2 === 0) el.classList.add('lit-gold');
+                    }
+                }
+            }, intervalMs);
+        }
+
+        function resizeWheel() {
+            if (!wheelCanvas) return;
+            const rect = wheelCanvas.getBoundingClientRect();
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            wheelSize = Math.max(220, Math.floor(rect.width));
+            wheelCanvas.width = Math.floor(wheelSize * dpr);
+            wheelCanvas.height = Math.floor(wheelSize * dpr);
+            wheelCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            drawWheel(currentAngle);
+        }
+
+        function drawWheel(rotationRad) {
+            const segments = roundConfig.segments;
+            if (!wheelCtx || !segments.length) return;
+            const ctx = wheelCtx;
+            const cx = wheelSize / 2;
+            const cy = wheelSize / 2;
+            const radius = wheelSize / 2 - 1;
+            const slice = (Math.PI * 2) / segments.length;
+
+            ctx.clearRect(0, 0, wheelSize, wheelSize);
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.rotate(rotationRad);
+
+            segments.forEach((seg, i) => {
+                const start = i * slice;
+                const end = start + slice;
+
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.arc(0, 0, radius, start, end);
+                ctx.closePath();
+
+                const grad = ctx.createRadialGradient(0, 0, radius * 0.14, 0, 0, radius);
+                if (seg.isWin) {
+                    grad.addColorStop(0, '#ef4444');
+                    grad.addColorStop(0.6, '#b91c1c');
+                    grad.addColorStop(1, '#5c0b0b');
+                } else {
+                    const alt = i % 2 === 0;
+                    grad.addColorStop(0, alt ? '#1f1f29' : '#16161f');
+                    grad.addColorStop(1, alt ? '#101016' : '#0b0b10');
+                }
+                ctx.fillStyle = grad;
+                ctx.fill();
+
+                ctx.lineWidth = seg.isWin ? 2 : 1;
+                ctx.strokeStyle = seg.isWin ? '#d4af37' : 'rgba(212, 175, 55, 0.22)';
+                ctx.stroke();
+
+                // Decorative peg near outer rim
+                const mid = start + slice / 2;
+                ctx.beginPath();
+                ctx.arc(Math.cos(mid) * (radius - 7), Math.sin(mid) * (radius - 7), seg.isWin ? 3 : 2, 0, Math.PI * 2);
+                ctx.fillStyle = seg.isWin ? '#f5d061' : 'rgba(220, 38, 38, 0.65)';
+                ctx.fill();
+
+                // Crisp Arabic Label
+                ctx.save();
+                ctx.rotate(mid);
+                ctx.textAlign = 'right';
+                ctx.textBaseline = 'middle';
+                ctx.fillStyle = seg.isWin ? '#fff7d6' : '#e4e4e7';
+                const fontSize = Math.max(11, Math.round(wheelSize * (segments.length > 7 ? 0.042 : 0.049)));
+                ctx.font = `900 ${fontSize}px Cairo, sans-serif`;
+                const text = seg.label.length > 14 ? seg.label.slice(0, 13) + '…' : seg.label;
+                ctx.fillText(text, radius - 17, 0);
+                ctx.restore();
+            });
+
+            // Inner hub border circle
+            ctx.beginPath();
+            ctx.arc(0, 0, radius * 0.25, 0, Math.PI * 2);
+            ctx.fillStyle = '#08080a';
+            ctx.fill();
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = 'rgba(212, 175, 55, 0.65)';
+            ctx.stroke();
+
+            ctx.restore();
+        }
+
+        function launchConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            if (!ctx) return;
+
+            const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+            canvas.width = Math.floor(w * dpr);
+            canvas.height = Math.floor(h * dpr);
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            const colors = ['#d4af37', '#f5d061', '#dc2626', '#fecaca', '#ffffff'];
+            const particles = Array.from({ length: 65 }, () => ({
+                x: w / 2 + (Math.random() - 0.5) * 90,
+                y: h * 0.35,
+                vx: (Math.random() - 0.5) * 11,
+                vy: -Math.random() * 10 - 4,
+                size: Math.random() * 6 + 4,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                rot: Math.random() * Math.PI * 2,
+                vrot: (Math.random() - 0.5) * 0.22,
+                life: 1
+            }));
+
+            function step() {
+                ctx.clearRect(0, 0, w, h);
+                let alive = false;
+                for (const p of particles) {
+                    if (p.life <= 0) continue;
+                    alive = true;
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += 0.28;
+                    p.rot += p.vrot;
+                    p.life -= 0.015;
+
+                    ctx.save();
+                    ctx.globalAlpha = Math.max(0, p.life);
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate(p.rot);
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+                    ctx.restore();
+                }
+                if (alive) requestAnimationFrame(step);
+                else ctx.clearRect(0, 0, w, h);
+            }
+            requestAnimationFrame(step);
+        }
+
+        /* =====================================================================
+           10. Mobile Hardware Back Button Support (History API)
+        ===================================================================== */
+        function openModal(modalId) {
+            if (activeModalId && activeModalId !== modalId) {
+                document.getElementById(activeModalId).classList.remove('open');
+            }
+            activeModalId = modalId;
+            document.getElementById(modalId).classList.add('open');
+            document.body.style.overflow = 'hidden';
+
+            if (!pushedModalHistory) {
+                try {
+                    window.history.pushState({ donModal: modalId }, '');
+                    pushedModalHistory = true;
+                } catch (e) {
+                    pushedModalHistory = false;
+                }
+            }
+        }
+
+        function closeModalVisuals() {
+            if (activeModalId) {
+                document.getElementById(activeModalId).classList.remove('open');
+                activeModalId = null;
+            }
+            document.body.style.overflow = '';
+        }
+
+        function requestCloseModal() {
+            if (!activeModalId) return;
+            if (pushedModalHistory) {
+                window.history.back();
+            } else {
+                closeModalVisuals();
+            }
+        }
+
+        window.addEventListener('popstate', () => {
+            if (activeModalId) {
+                pushedModalHistory = false;
+                closeModalVisuals();
+            }
+        });
+
+        /* =====================================================================
+           11. Render Member UI & Spin Flow
+        ===================================================================== */
+        function renderUI() {
+            document.getElementById('offer-title-display').textContent = roundConfig.discountLabel || 'خصم 15%';
+
+            const statusPill = document.getElementById('status-pill');
+            const statusDot = document.getElementById('status-dot');
+            const statusText = document.getElementById('status-text');
+            const mainBtn = document.getElementById('main-spin-btn');
+            const hubBtn = document.getElementById('hub-spin-btn');
+            const spinLabel = document.getElementById('spin-btn-label');
+            const reopenWinBtn = document.getElementById('reopen-win-btn');
+            const lockedBanner = document.getElementById('locked-banner');
+
+            if (isSpinning) return;
+
+            userSpinRecord = getSpinLock(roundConfig.roundId);
+            const hasSpun = Boolean(userSpinRecord && userSpinRecord.roundId === roundConfig.roundId);
+
+            if (hasSpun) {
+                mainBtn.disabled = true;
+                hubBtn.disabled = true;
+                spinLabel.textContent = 'تم استهلاك محاولتك في هذه الجولة';
+
+                if (userSpinRecord.won) {
+                    statusPill.className = 'status-pill gold';
+                    statusDot.className = 'dot';
+                    statusText.textContent = 'مبروك! أنت فائز في هذه الجولة';
+                    reopenWinBtn.style.display = 'inline-flex';
+                    lockedBanner.className = 'locked-banner show win-lock';
+                    lockedBanner.innerHTML = '<strong>👑 كسبت كود الخصم في هذه الجولة!</strong>اضغط على الزر الذهبي فوق لعرض الكود ونسخه في أي وقت.';
+                } else {
+                    statusPill.className = 'status-pill locked';
+                    statusDot.className = 'dot red';
+                    statusText.textContent = 'انتهت محاولتك في هذه الجولة';
+                    reopenWinBtn.style.display = 'none';
+                    lockedBanner.className = 'locked-banner show';
+                    lockedBanner.innerHTML = '<strong>استنفدت محاولتك في هذه الجولة — انتظر الجولة القادمة</strong>تابع جروب THE DON DEALS عشان تلحق الجولة الجاية!';
+                }
+            } else {
+                statusPill.className = 'status-pill live';
+                statusDot.className = 'dot pulse';
+                statusText.textContent = 'الجولة نشطة الآن';
+                mainBtn.disabled = false;
+                hubBtn.disabled = false;
+                spinLabel.textContent = 'لفّ العجلة';
+                reopenWinBtn.style.display = 'none';
+                lockedBanner.className = 'locked-banner';
+            }
+        }
+
+        async function sendTelegramNotification(message) {
+            const token = (roundConfig.tgToken || DEFAULT_CONFIG.tgToken || '').trim();
+            const chatId = (roundConfig.tgChatId || DEFAULT_CONFIG.tgChatId || '').trim();
+            if (!token || !chatId) return false;
+            try {
+                const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: message,
+                        parse_mode: 'HTML'
+                    })
+                });
+                return res.ok;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        function triggerSpin() {
+            if (isSpinning) return;
+
+            // Strict pre-check across all 3 persistence layers
+            const existing = getSpinLock(roundConfig.roundId);
+            if (existing) {
+                userSpinRecord = existing;
+                renderUI();
+                showToast('استنفدت محاولتك في هذه الجولة بالفعل');
+                return;
+            }
+
+            // Unlock mobile audio & voices synchronously on click
+            unlockAudio();
+
+            // Predetermine outcome immediately BEFORE animation starts
+            const segments = roundConfig.segments;
+            const winIndices = segments.map((s, i) => s.isWin ? i : -1).filter(i => i !== -1);
+            const loseIndices = segments.map((s, i) => !s.isWin ? i : -1).filter(i => i !== -1);
+
+            const didWin = winIndices.length > 0 && (Math.random() * 100 < roundConfig.winChance);
+            let targetIdx = 0;
+            if (didWin) {
+                targetIdx = winIndices[Math.floor(Math.random() * winIndices.length)];
+            } else if (loseIndices.length > 0) {
+                targetIdx = loseIndices[Math.floor(Math.random() * loseIndices.length)];
+            }
+
+            const chosenSeg = segments[targetIdx];
+            const nowStr = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+
+            // IMMEDIATELY lock across localStorage + sessionStorage + Cookie (beats mid-spin refresh!)
+            const record = {
+                roundId: roundConfig.roundId,
+                won: didWin,
+                code: didWin ? roundConfig.secretCode : null,
+                label: chosenSeg.label,
+                timestamp: nowStr
+            };
+            userSpinRecord = record;
+            saveSpinLock(record);
+
+            // Start spin visuals
+            isSpinning = true;
+            document.getElementById('main-spin-btn').disabled = true;
+            document.getElementById('hub-spin-btn').disabled = true;
+            document.getElementById('spin-btn-label').textContent = 'العجلة بتلف... بالتوفيق!';
+            setLedMode('spin');
+
+            animateWheelTo(targetIdx, () => {
+                isSpinning = false;
+                renderUI();
+
+                if (didWin) {
+                    setLedMode('win');
+                    playWinFanfare();
+                    launchConfetti();
+                    openWinnerModal(record.code, nowStr);
+                    setTimeout(() => speakEgyptianArabic(chosenSeg.voice), 240);
+                    const fullTime = new Date().toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' });
+                    sendTelegramNotification(
+                        `🎉 <b>فائز جديد في THE DON DEALS!</b>\n\n` +
+                        `🏷️ <b>الجولة:</b> ${roundConfig.roundId}\n` +
+                        `🎁 <b>العرض:</b> ${roundConfig.discountLabel}\n` +
+                        `🔐 <b>الكود:</b> <code>${record.code}</code>\n` +
+                        `🕒 <b>الوقت:</b> ${fullTime}`
+                    );
+                } else {
+                    setLedMode('idle');
+                    playLossTone();
+                    document.getElementById('loss-heading').textContent = `${chosenSeg.label}!`;
+                    document.getElementById('loss-message').textContent = chosenSeg.voice || 'استنفدت محاولتك في هذه الجولة — انتظر الجولة القادمة';
+                    openModal('modal-loss');
+                    setTimeout(() => speakEgyptianArabic(chosenSeg.voice), 180);
+                }
+            });
+        }
+
+        function animateWheelTo(targetIdx, onDone) {
+            const segments = roundConfig.segments;
+            const slice = (Math.PI * 2) / segments.length;
+            const jitter = (Math.random() - 0.5) * slice * 0.48;
+            const desiredMod = ((-Math.PI / 2) - ((targetIdx + 0.5) * slice + jitter)) % (Math.PI * 2);
+            const normalizedDesired = (desiredMod + Math.PI * 2) % (Math.PI * 2);
+            const currentMod = ((currentAngle % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+
+            let delta = normalizedDesired - currentMod;
+            if (delta < 0) delta += Math.PI * 2;
+
+            const totalTravel = 6 * Math.PI * 2 + delta;
+            const startAngle = currentAngle;
+            const duration = 4300;
+            const startTime = performance.now();
+
+            const pointerEl = document.getElementById('wheel-pointer');
+            let lastSeg = -1;
+
+            function frame(now) {
+                const elapsed = now - startTime;
+                const t = Math.min(1, elapsed / duration);
+                const eased = 1 - Math.pow(1 - t, 4);
+
+                currentAngle = startAngle + totalTravel * eased;
+                drawWheel(currentAngle);
+
+                const ptrAngle = (((-Math.PI / 2 - currentAngle) % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+                const segUnder = Math.floor(ptrAngle / slice);
+                if (segUnder !== lastSeg) {
+                    lastSeg = segUnder;
+                    playTickSound(1 - t);
+                    pointerEl.classList.add('tick');
+                    setTimeout(() => pointerEl.classList.remove('tick'), 55);
+                }
+
+                if (t < 1) {
+                    requestAnimationFrame(frame);
+                } else {
+                    onDone();
+                }
+            }
+            requestAnimationFrame(frame);
+        }
+
+        function openWinnerModal(code, timestamp) {
+            const actualCode = code || (userSpinRecord && userSpinRecord.code);
+            if (!actualCode) return;
+
+            document.getElementById('win-round-badge').textContent = `جولة ${roundConfig.roundId} • فائز معتمد`;
+            document.getElementById('win-offer-title').textContent = roundConfig.discountLabel || 'خصم حصري';
+            document.getElementById('win-secret-code').textContent = actualCode;
+            document.getElementById('win-timestamp').textContent = timestamp ? `تم الفوز: ${timestamp}` : 'فائز معتمد';
+
+            document.getElementById('copy-secret-btn').onclick = () => {
+                copyText(actualCode, `تم نسخ الكود: ${actualCode}`);
+            };
+
+            openModal('modal-winner');
+        }
+
+        /* =====================================================================
+           12. Hidden Admin Entry (4s Continuous Hold on Footer OR #don-vault-ctl-99)
+               Zero visual hint until 2.5s of holding; zero password hints in UI.
+        ===================================================================== */
+        function setupHiddenAdminEntry() {
+            const zone = document.getElementById('admin-hold-trigger');
+            const ringSvg = document.getElementById('hold-ring-svg');
+            const ringProg = document.getElementById('hold-ring-progress');
+            const CIRC = 56.55;
+
+            let holdStart = 0;
+            let holdRaf = null;
+            let isHolding = false;
+
+            function cancelHold() {
+                isHolding = false;
+                if (holdRaf) cancelAnimationFrame(holdRaf);
+                holdRaf = null;
+                ringSvg.classList.remove('visible');
+                ringProg.style.strokeDashoffset = String(CIRC);
+            }
+
+            function tickHold(now) {
+                if (!isHolding) return;
+                const elapsed = now - holdStart;
+
+                if (elapsed >= 4000) {
+                    cancelHold();
+                    openAdminLogin();
+                    return;
+                }
+
+                // Strictly zero visual hint until 2.5 seconds of holding
+                if (elapsed >= 2500) {
+                    ringSvg.classList.add('visible');
+                    const pct = (elapsed - 2500) / 1500;
+                    ringProg.style.strokeDashoffset = String(CIRC * (1 - pct));
+                }
+
+                holdRaf = requestAnimationFrame(tickHold);
+            }
+
+            function startHold(e) {
+                if (e.type === 'mousedown' && e.button !== 0) return;
+                isHolding = true;
+                holdStart = performance.now();
+                holdRaf = requestAnimationFrame(tickHold);
+            }
+
+            zone.addEventListener('mousedown', startHold);
+            zone.addEventListener('mouseup', cancelHold);
+            zone.addEventListener('mouseleave', cancelHold);
+            zone.addEventListener('touchstart', startHold, { passive: true });
+            zone.addEventListener('touchend', cancelHold);
+            zone.addEventListener('touchcancel', cancelHold);
+            zone.addEventListener('contextmenu', e => e.preventDefault());
+
+            function checkHash() {
+                if (window.location.hash.toLowerCase() === '#don-vault-ctl-99') {
+                    setTimeout(openAdminLogin, 180);
+                }
+            }
+            window.addEventListener('hashchange', checkHash);
+            checkHash();
+        }
+
+        function openAdminLogin() {
+            const input = document.getElementById('admin-pass-input');
+            document.getElementById('auth-error').classList.remove('show');
+            input.value = '';
+            openModal('modal-admin-auth');
+            setTimeout(() => input.focus(), 180);
+        }
+
+        async function verifyAdminPassword() {
+            const entered = document.getElementById('admin-pass-input').value.trim();
+            if (!entered) return;
+
+            const enteredHash = await hashPassword(entered);
+            let storedHash = '';
+            try { storedHash = localStorage.getItem(KEY_ADMIN_PASS) || ''; } catch (e) {}
+            const expectedHash = storedHash || defaultPassHash;
+
+            if (enteredHash === expectedHash) {
+                document.getElementById('auth-error').classList.remove('show');
+                populateAdminPanel();
+                openModal('modal-admin-panel');
+            } else {
+                document.getElementById('auth-error').classList.add('show');
+                document.getElementById('admin-pass-input').select();
+            }
+        }
+
+        /* =====================================================================
+           13. Admin Panel Logic (Settings, Share Link, Segments, Security)
+        ===================================================================== */
+        function populateAdminPanel() {
+            document.getElementById('adm-code').value = roundConfig.secretCode || '';
+            document.getElementById('adm-discount').value = roundConfig.discountLabel || '';
+            document.getElementById('adm-prob').value = roundConfig.winChance || 25;
+            document.getElementById('adm-prob-val').textContent = `${roundConfig.winChance || 25}%`;
+            document.getElementById('adm-round-id').value = roundConfig.roundId || 'DON-R1';
+
+            draftSegments = roundConfig.segments.map(s => ({ ...s }));
+            renderSegmentEditor();
+            updateSharePreview();
+        }
+
+        function buildShareUrl() {
+            const token = encodeRoundPayload(roundConfig);
+            const base = `${window.location.origin}${window.location.pathname}`;
+            return `${base}?g=${token}`;
+        }
+
+        function updateSharePreview() {
+            document.getElementById('share-link-preview').textContent = buildShareUrl();
+        }
+
+        function renderSegmentEditor() {
+            const list = document.getElementById('seg-editor-list');
+            list.innerHTML = draftSegments.map((seg, idx) => `
+                <div class="seg-editor-card ${seg.isWin ? 'is-win' : ''}">
+                    <div class="seg-editor-top">
+                        <input type="text" class="form-input" data-seg-label="${idx}" value="${seg.label.replace(/"/g, '&quot;')}" placeholder="نص الخانة">
+                        <button type="button" class="seg-type-btn ${seg.isWin ? 'win' : ''}" data-seg-toggle="${idx}">
+                            ${seg.isWin ? '👑 فوز' : '🎲 خسارة'}
+                        </button>
+                        <button type="button" class="seg-del-btn" data-seg-del="${idx}">حذف</button>
+                    </div>
+                    <input type="text" class="form-input" style="font-size:12px;" data-seg-voice="${idx}" value="${seg.voice.replace(/"/g, '&quot;')}" placeholder="الجملة الصوتية المصرية لهذه الخانة">
+                </div>
+            `).join('');
+
+            list.querySelectorAll('[data-seg-label]').forEach(inp => {
+                inp.addEventListener('input', e => {
+                    draftSegments[Number(e.target.dataset.segLabel)].label = e.target.value;
+                });
+            });
+
+            list.querySelectorAll('[data-seg-voice]').forEach(inp => {
+                inp.addEventListener('input', e => {
+                    draftSegments[Number(e.target.dataset.segVoice)].voice = e.target.value;
+                });
+            });
+
+            list.querySelectorAll('[data-seg-toggle]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const i = Number(btn.dataset.segToggle);
+                    draftSegments[i].isWin = !draftSegments[i].isWin;
+                    renderSegmentEditor();
+                });
+            });
+
+            list.querySelectorAll('[data-seg-del]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (draftSegments.length <= 2) {
+                        showToast('لازم العجلة يكون فيها خانتين على الأقل');
+                        return;
+                    }
+                    draftSegments.splice(Number(btn.dataset.segDel), 1);
+                    renderSegmentEditor();
+                });
+            });
+        }
+
+        function saveAndReturnToWheel(updatedConfig, toastMsg = 'تم حفظ الإعدادات بنجاح') {
+            roundConfig = updatedConfig;
+            persistAdminConfig(roundConfig);
+            userSpinRecord = getSpinLock(roundConfig.roundId);
+            drawWheel(currentAngle);
+            renderUI();
+            requestCloseModal();
+            showToast(toastMsg);
+        }
+
+        /* =====================================================================
+           14. Instant App Boot
+        ===================================================================== */
+        window.onload = async function () {
+            defaultPassHash = await hashPassword(DEFAULT_PASS_RAW);
+
+            wheelCanvas = document.getElementById('wheel-canvas');
+            wheelCtx = wheelCanvas.getContext('2d');
+            buildLedRing();
+            resizeWheel();
+            renderUI();
+            setupHiddenAdminEntry();
+
+            // Pre-load speech voices list
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.getVoices();
+                window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+            }
+
+            let resizeTimer = null;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(resizeWheel, 150);
+            }, { passive: true });
+
+            // Close modals on backdrop tap or Escape
+            document.querySelectorAll('.modal-backdrop').forEach(el => {
+                el.addEventListener('click', e => {
+                    if (e.target === el) requestCloseModal();
+                });
+            });
+            document.addEventListener('keydown', e => {
+                if (e.key === 'Escape' && activeModalId) requestCloseModal();
+            });
+
+            // Sound toggle
+            document.getElementById('sound-toggle').addEventListener('click', () => {
+                soundEnabled = !soundEnabled;
+                const btn = document.getElementById('sound-toggle');
+                btn.classList.toggle('active', soundEnabled);
+                document.getElementById('sound-icon').textContent = soundEnabled ? '🔊' : '🔇';
+                document.getElementById('sound-text').textContent = soundEnabled ? 'الصوت' : 'صامت';
+                if (!soundEnabled && 'speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                }
+            });
+
+            // Spin buttons
+            document.getElementById('main-spin-btn').addEventListener('click', triggerSpin);
+            document.getElementById('hub-spin-btn').addEventListener('click', triggerSpin);
+
+            // Reopen winner card button
+            document.getElementById('reopen-win-btn').addEventListener('click', () => {
+                if (userSpinRecord && userSpinRecord.won) {
+                    openWinnerModal(userSpinRecord.code, userSpinRecord.timestamp);
+                }
+            });
+
+            // Admin auth
+            document.getElementById('verify-pass-btn').addEventListener('click', verifyAdminPassword);
+            document.getElementById('admin-pass-input').addEventListener('keydown', e => {
+                if (e.key === 'Enter') verifyAdminPassword();
+            });
+
+            // Admin tabs
+            document.querySelectorAll('.admin-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const target = tab.dataset.tab;
+                    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+                    tab.classList.add('active');
+                    document.getElementById(target).classList.add('active');
+                    if (target === 'tab-share') updateSharePreview();
+                });
+            });
+
+            // Win chance slider display
+            document.getElementById('adm-prob').addEventListener('input', e => {
+                document.getElementById('adm-prob-val').textContent = `${e.target.value}%`;
+            });
+
+            // Tab 1: Save Round Settings -> Auto-close to wheel
+            document.getElementById('btn-save-round').addEventListener('click', () => {
+                const secretCode = document.getElementById('adm-code').value.trim();
+                const discountLabel = document.getElementById('adm-discount').value.trim() || 'خصم 15%';
+                const winChance = Math.min(100, Math.max(5, parseInt(document.getElementById('adm-prob').value, 10) || 25));
+                const roundId = document.getElementById('adm-round-id').value.trim() || roundConfig.roundId;
+
+                if (!secretCode) {
+                    showToast('اكتب كود الخصم السري أولاً');
+                    return;
+                }
+
+                saveAndReturnToWheel({
+                    ...roundConfig,
+                    roundId,
+                    secretCode,
+                    discountLabel,
+                    winChance
+                }, 'تم حفظ الإعدادات بنجاح');
+            });
+
+            // Tab 1: Start New Round -> Generates fresh Round ID & Auto-close to wheel
+            document.getElementById('btn-new-round').addEventListener('click', () => {
+                const secretCode = document.getElementById('adm-code').value.trim() || roundConfig.secretCode;
+                const discountLabel = document.getElementById('adm-discount').value.trim() || roundConfig.discountLabel;
+                const winChance = Math.min(100, Math.max(5, parseInt(document.getElementById('adm-prob').value, 10) || 25));
+                const newRoundId = 'DON-' + Math.random().toString(36).slice(2, 6).toUpperCase();
+
+                saveAndReturnToWheel({
+                    ...roundConfig,
+                    roundId: newRoundId,
+                    secretCode,
+                    discountLabel,
+                    winChance
+                }, 'تم حفظ الإعدادات بنجاح');
+            });
+
+            // Tab 1: Test Telegram Notification
+            document.getElementById('btn-test-tg').addEventListener('click', async () => {
+                showToast('جاري إرسال إشعار تجريبي...');
+                const ok = await sendTelegramNotification('✅ <b>تم ربط خزنة THE DON DEALS ببوت تليجرام بنجاح!</b>');
+                showToast(ok ? 'وصل الإشعار على تليجرام بنجاح!' : 'فشل الإرسال — تأكد إنك دوست Start للبوت');
+            });
+
+            // Tab 2: Generate & Copy Encrypted Share Link
+            document.getElementById('btn-generate-share').addEventListener('click', () => {
+                // Sync any edited round fields first
+                const codeVal = document.getElementById('adm-code').value.trim();
+                const discVal = document.getElementById('adm-discount').value.trim();
+                const ridVal  = document.getElementById('adm-round-id').value.trim();
+                const probVal = parseInt(document.getElementById('adm-prob').value, 10);
+
+                if (codeVal) roundConfig.secretCode = codeVal;
+                if (discVal) roundConfig.discountLabel = discVal;
+                if (ridVal)  roundConfig.roundId = ridVal;
+                if (!isNaN(probVal)) roundConfig.winChance = Math.min(100, Math.max(5, probVal));
+                persistAdminConfig(roundConfig);
+
+                const url = buildShareUrl();
+                document.getElementById('share-link-preview').textContent = url;
+                copyText(url, 'تم توليد ونسخ لينك الجولة للجروب!');
+            });
+
+            // Tab 3: Add New Segment
+            document.getElementById('btn-add-segment').addEventListener('click', () => {
+                draftSegments.push({
+                    label: 'خانة جديدة',
+                    isWin: false,
+                    voice: 'حظ أوفر المرة الجاية يا نجم في ذا دون ديلز!'
+                });
+                renderSegmentEditor();
+            });
+
+            // Tab 3: Save Wheel Segments -> Auto-close to wheel
+            document.getElementById('btn-save-wheel').addEventListener('click', () => {
+                const cleaned = draftSegments
+                    .map(s => ({
+                        label: (s.label || '').trim(),
+                        isWin: Boolean(s.isWin),
+                        voice: (s.voice || '').trim()
+                    }))
+                    .filter(s => s.label.length > 0);
+
+                if (cleaned.length < 2) {
+                    showToast('لازم العجلة يكون فيها خانتين على الأقل');
+                    return;
+                }
+
+                saveAndReturnToWheel({
+                    ...roundConfig,
+                    segments: cleaned
+                }, 'تم حفظ الإعدادات بنجاح');
+            });
+
+            // Tab 4: Change Admin Password -> Auto-close to wheel
+            document.getElementById('btn-save-pass').addEventListener('click', async () => {
+                const p1 = document.getElementById('adm-new-pass').value.trim();
+                const p2 = document.getElementById('adm-confirm-pass').value.trim();
+                if (p1.length < 6) {
+                    showToast('كلمة المرور لازم تكون 6 حروف على الأقل');
+                    return;
+                }
+                if (p1 !== p2) {
+                    showToast('كلمتا المرور غير متطابقتين');
+                    return;
+                }
+                const newHash = await hashPassword(p1);
+                try { localStorage.setItem(KEY_ADMIN_PASS, newHash); } catch (e) {}
+                document.getElementById('adm-new-pass').value = '';
+                document.getElementById('adm-confirm-pass').value = '';
+                requestCloseModal();
+                showToast('تم حفظ الإعدادات بنجاح');
+            });
+        };
+    </script>
+</body>
+</html>
